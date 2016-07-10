@@ -1,0 +1,161 @@
+conf:
+             batch_size: -1
+    bbox_class_agnostic: 1
+            bbox_thresh: 0.5000
+           bg_thresh_hi: 0.5000
+           bg_thresh_lo: 0
+            fg_fraction: -1
+              fg_thresh: 0.5000
+            image_means: [224x224x3 single]
+          ims_per_batch: 2
+               max_size: 1000
+               rng_seed: 6
+                 scales: 600
+            test_binary: 0
+          test_max_size: 1000
+               test_nms: 0.3000
+            test_scales: 600
+            use_flipped: 1
+                use_gpu: 1
+
+opts:
+           cache_name: 'rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50'
+        caffe_version: 'caffe_rfcn'
+                 conf: [1x1 struct]
+               do_val: 1
+           imdb_train: {[1x1 struct]  [1x1 struct]}
+             imdb_val: [1x1 struct]
+             net_file: '/home/zhouyz14/R-FCN/models/pre_trained_models/ResNet-50...'
+          roidb_train: {[1x1 struct]  [1x1 struct]}
+            roidb_val: [1x1 struct]
+    snapshot_interval: 10000
+      solver_def_file: '/home/zhouyz14/R-FCN/models/rfcn_prototxts/ResNet-50L_OH...'
+         val_interval: 5000
+            val_iters: 500
+
+Preparing training data...Done.
+Preparing validation data...Done.
+Starting parallel pool (parpool) using the 'local' profile ... connected to 1 workers.
+
+------------------------- Iteration 0 -------------------------
+Training : accuracy 0, loss (cls 3.05, reg 0.237)
+Testing  : accuracy 0.0188, loss (cls 3.05, reg 0.394)
+Elapsed time is 124.063440 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_0
+
+------------------------- Iteration 5000 -------------------------
+Training : accuracy 0.786, loss (cls 0.693, reg 0.281)
+Testing  : accuracy 0.814, loss (cls 0.512, reg 0.235)
+Elapsed time is 2877.048937 seconds.
+
+------------------------- Iteration 10000 -------------------------
+Training : accuracy 0.815, loss (cls 0.51, reg 0.231)
+Testing  : accuracy 0.829, loss (cls 0.468, reg 0.211)
+Elapsed time is 2885.025019 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_10000
+
+------------------------- Iteration 15000 -------------------------
+Training : accuracy 0.821, loss (cls 0.484, reg 0.22)
+Testing  : accuracy 0.829, loss (cls 0.448, reg 0.21)
+Elapsed time is 2888.285998 seconds.
+
+------------------------- Iteration 20000 -------------------------
+Training : accuracy 0.836, loss (cls 0.435, reg 0.199)
+Testing  : accuracy 0.836, loss (cls 0.435, reg 0.196)
+Elapsed time is 2897.730727 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_20000
+
+------------------------- Iteration 25000 -------------------------
+Training : accuracy 0.839, loss (cls 0.423, reg 0.195)
+Testing  : accuracy 0.837, loss (cls 0.419, reg 0.193)
+Elapsed time is 2894.246364 seconds.
+
+------------------------- Iteration 30000 -------------------------
+Training : accuracy 0.842, loss (cls 0.414, reg 0.189)
+Testing  : accuracy 0.843, loss (cls 0.403, reg 0.191)
+Elapsed time is 2891.868069 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_30000
+
+------------------------- Iteration 35000 -------------------------
+Training : accuracy 0.847, loss (cls 0.399, reg 0.18)
+Testing  : accuracy 0.848, loss (cls 0.388, reg 0.186)
+Elapsed time is 2892.799711 seconds.
+
+------------------------- Iteration 40000 -------------------------
+Training : accuracy 0.854, loss (cls 0.377, reg 0.172)
+Testing  : accuracy 0.843, loss (cls 0.401, reg 0.181)
+Elapsed time is 2935.063743 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_40000
+
+------------------------- Iteration 45000 -------------------------
+Training : accuracy 0.853, loss (cls 0.383, reg 0.174)
+Testing  : accuracy 0.846, loss (cls 0.407, reg 0.188)
+Elapsed time is 2994.908957 seconds.
+
+------------------------- Iteration 50000 -------------------------
+Training : accuracy 0.854, loss (cls 0.381, reg 0.171)
+Testing  : accuracy 0.85, loss (cls 0.39, reg 0.173)
+Elapsed time is 3000.613471 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_50000
+
+------------------------- Iteration 55000 -------------------------
+Training : accuracy 0.863, loss (cls 0.349, reg 0.16)
+Testing  : accuracy 0.85, loss (cls 0.39, reg 0.174)
+Elapsed time is 2991.037993 seconds.
+
+------------------------- Iteration 60000 -------------------------
+Training : accuracy 0.861, loss (cls 0.359, reg 0.162)
+Testing  : accuracy 0.846, loss (cls 0.411, reg 0.174)
+Elapsed time is 2947.930546 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_60000
+
+------------------------- Iteration 65000 -------------------------
+Training : accuracy 0.862, loss (cls 0.357, reg 0.161)
+Testing  : accuracy 0.85, loss (cls 0.388, reg 0.17)
+Elapsed time is 2932.670194 seconds.
+
+------------------------- Iteration 70000 -------------------------
+Training : accuracy 0.867, loss (cls 0.339, reg 0.154)
+Testing  : accuracy 0.851, loss (cls 0.389, reg 0.166)
+Elapsed time is 2936.905466 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_70000
+
+------------------------- Iteration 75000 -------------------------
+Training : accuracy 0.868, loss (cls 0.339, reg 0.152)
+Testing  : accuracy 0.846, loss (cls 0.398, reg 0.174)
+Elapsed time is 2891.936412 seconds.
+
+------------------------- Iteration 80000 -------------------------
+Training : accuracy 0.866, loss (cls 0.344, reg 0.154)
+Testing  : accuracy 0.849, loss (cls 0.391, reg 0.165)
+Elapsed time is 2889.144628 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_80000
+
+------------------------- Iteration 85000 -------------------------
+Training : accuracy 0.885, loss (cls 0.287, reg 0.128)
+Testing  : accuracy 0.862, loss (cls 0.35, reg 0.151)
+Elapsed time is 2902.781693 seconds.
+
+------------------------- Iteration 90000 -------------------------
+Training : accuracy 0.894, loss (cls 0.263, reg 0.119)
+Testing  : accuracy 0.863, loss (cls 0.348, reg 0.15)
+Elapsed time is 2929.754568 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_90000
+
+------------------------- Iteration 95000 -------------------------
+Training : accuracy 0.895, loss (cls 0.259, reg 0.117)
+Testing  : accuracy 0.863, loss (cls 0.349, reg 0.15)
+Elapsed time is 2881.414505 seconds.
+
+------------------------- Iteration 100000 -------------------------
+Training : accuracy 0.896, loss (cls 0.255, reg 0.115)
+Testing  : accuracy 0.863, loss (cls 0.35, reg 0.15)
+Elapsed time is 2877.790148 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_100000
+
+------------------------- Iteration 105000 -------------------------
+Training : accuracy 0.898, loss (cls 0.251, reg 0.114)
+Testing  : accuracy 0.863, loss (cls 0.354, reg 0.15)
+Elapsed time is 2876.848638 seconds.
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/iter_110000
+Saved as /home/zhouyz14/R-FCN/output/rfcn_cachedir/rfcn_VOC0712_ResNet50_OHEM_rpn_resnet50/voc_2007_trainvalvoc_2012_trainval/final
