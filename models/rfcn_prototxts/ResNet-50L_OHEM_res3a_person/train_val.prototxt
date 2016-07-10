@@ -3581,7 +3581,7 @@ layer {
     name: "rfcn_cls"
     type: "Convolution"
     convolution_param {
-        num_output: 98 #2*(7^2) cls_num*(score_maps_size^2)
+        num_output: 147 #3*(7^2) cls_num*(score_maps_size^2)
         kernel_size: 1
         pad: 0
         weight_filler {
@@ -3635,7 +3635,7 @@ layer {
     type: "PSROIPooling"
     psroi_pooling_param {
         spatial_scale: 0.0625
-        output_dim: 2
+        output_dim: 3
         group_size: 7
     }
 }

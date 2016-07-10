@@ -5,13 +5,13 @@ function [image_roidb, bbox_means, bbox_stds] = rfcn_prepare_image_roidb(conf, i
 % Modified from MATLAB Faster R-CNN (https://github.com/shaoqingren/faster_rcnn)
 % Copyright (c) 2016, Jifeng Dai
 % Licensed under The MIT License [see LICENSE for details]
-% --------------------------------------------------------   
-    
+% --------------------------------------------------------
+
     if ~exist('bbox_means', 'var')
         bbox_means = [];
         bbox_stds = [];
     end
-    
+
     if ~iscell(imdbs)
         imdbs = {imdbs};
         roidbs = {roidbs};
@@ -19,17 +19,91 @@ function [image_roidb, bbox_means, bbox_stds] = rfcn_prepare_image_roidb(conf, i
 
     imdbs = imdbs(:);
     roidbs = roidbs(:);
-    
+
     image_roidb = cellfun(@(x, y) ... // @(imdbs, roidbs)
-                    arrayfun(@(z) ... //@([1:length(x.image_ids)])
+                    arrayfun(@(z) ... // @([1:length(x.image_ids)])
                         struct('image_path', x.image_at(z), 'image_id', x.image_ids{z}, 'im_size', x.sizes(z, :), 'imdb_name', x.name, ...
                         'overlap', y.rois(z).overlap, 'boxes', y.rois(z).boxes, 'class', y.rois(z).class, 'image', [], 'bbox_targets', []), ...
                         [1:length(x.image_ids)]', 'UniformOutput', true), imdbs, roidbs, 'UniformOutput', false);
-    
+
     image_roidb = cat(1, image_roidb{:});
-    
+    % image_roidb
+    % ===========
+    % 33102x1 struct array with fields:
+    %
+    %     image_path
+    %     image_id
+    %     im_size
+    %     imdb_name
+    %     overlap
+    %     boxes
+    %     class
+    %     image
+    %     bbox_targets
+    % ===========(1 out of 33102)
+    %     image_path: '/home/zhouyz14/VOC2007/VOCdevkit/VOC2007/JPEGImages/000009_flip.jpg'
+    %     image_id: '000009_flip'
+    %     im_size: [375 500]
+    %     imdb_name: 'voc_2007_trainval'
+    %     overlap: [304x20 single]
+    %     boxes: [304x4 single]
+    %     class: [304x1 uint8]
+    %     image: []
+    %     bbox_targets: []
+
+    if (conf.person_only)
+      num_images = length(image_roidb);
+      for i = 1:num_images
+        if_person = (image_roidb(i).class == 15);
+        if_bg = (image_roidb(i).class == 0);
+        % map 20 classes to 2 classes(person or non_person)
+        new_overlap = zeros(size(if_person, 1), 2);
+        new_overlap(if_person,1) = image_roidb(i).overlap(if_person, 15);
+        new_overlap(~if_person,2) = max(image_roidb(i).overlap(~if_person,:),[],2);
+        image_roidb(i).overlap = new_overlap;
+        % map person to 1, non_person to 2;
+        image_roidb(i).class(if_person) == 1;
+        image_roidb(i).class(~or(if_bg,if_person)) == 2;
+        if (~mod(i, 5000))
+		  i
+        end
+      end
+    end
+
     % enhance roidb to contain bounding-box regression targets
     [image_roidb, bbox_means, bbox_stds] = append_bbox_regression_targets(conf, image_roidb, bbox_means, bbox_stds);
+    %     image_roidb =
+    % =========
+    % 33102x1 struct array with fields:
+    %
+    %     image_path
+    %     image_id
+    %     im_size
+    %     imdb_name
+    %     overlap
+    %     boxes
+    %     class
+    %     image
+    %     bbox_targets
+    % =========
+    %     image_path: '/home/zhouyz14/VOC2007/VOCdevkit/VOC2007/JPEGImages/000005.jpg'
+    %     image_id: '000005'
+    %     im_size: [375 500]
+    %     imdb_name: 'voc_2007_trainval'
+    %     overlap: [303x20 single]
+    %     boxes: [303x4 single]
+    %     class: [303x1 uint8]
+    %     image: []
+    %     bbox_targets: [303x5 single]    (APPENDED)
+    % =========
+    %   bbox_means =
+    %        0         0         0         0
+    %  -0.0014    0.0056    0.0311    0.0504
+    %   bbox_stds =
+    %          0         0         0         0
+    %     0.1325    0.1258    0.2489    0.2196
+
+
 end
 
 function [image_roidb, means, stds] = append_bbox_regression_targets(conf, image_roidb, means, stds)
@@ -42,10 +116,10 @@ function [image_roidb, means, stds] = append_bbox_regression_targets(conf, image
     else
         num_classes = size(image_roidb(1).overlap, 2);
     end
-    
+
     valid_imgs = true(num_images, 1);
     for i = 1:num_images
-       rois = image_roidb(i).boxes; 
+       rois = image_roidb(i).boxes;
        [image_roidb(i).bbox_targets, valid_imgs(i)] = ...
            compute_targets(conf, rois, image_roidb(i).overlap);
     end
@@ -54,7 +128,7 @@ function [image_roidb, means, stds] = append_bbox_regression_targets(conf, image
         num_images = length(image_roidb);
         fprintf('Warning: rfcn_prepare_image_roidb: filter out %d images, which contains zero valid samples\n', sum(~valid_imgs));
     end
-        
+
     if ~(exist('means', 'var') && ~isempty(means) && exist('stds', 'var') && ~isempty(stds))
         % Compute values needed for means and stds
         % var(x) = E(x^2) - E(x)^2
@@ -66,7 +140,7 @@ function [image_roidb, means, stds] = append_bbox_regression_targets(conf, image
            for cls = 1:num_classes
               cls_inds = find(targets(:, 1) == cls);
               if ~isempty(cls_inds)
-                 class_counts(cls) = class_counts(cls) + length(cls_inds); 
+                 class_counts(cls) = class_counts(cls) + length(cls_inds);
                  sums(cls, :) = sums(cls, :) + sum(targets(cls_inds, 2:end), 1);
                  squared_sums(cls, :) = squared_sums(cls, :) + sum(targets(cls_inds, 2:end).^2, 1);
               end
@@ -75,12 +149,12 @@ function [image_roidb, means, stds] = append_bbox_regression_targets(conf, image
 
         means = bsxfun(@rdivide, sums, class_counts);
         stds = (bsxfun(@minus, bsxfun(@rdivide, squared_sums, class_counts), means.^2)).^0.5;
-        
+
         % add background class
-        means = [0, 0, 0, 0; means]; 
+        means = [0, 0, 0, 0; means];
         stds = [0, 0, 0, 0; stds];
     end
-    
+
     % Normalize targets
     for i = 1:num_images
         targets = image_roidb(i).bbox_targets;
@@ -98,19 +172,19 @@ end
 
 
 function [bbox_targets, is_valid] = compute_targets(conf, rois, overlap)
-
+    % rois: [1*4], overlap [1*20]
     overlap = full(overlap);
 
     [max_overlaps, max_labels] = max(overlap, [], 2);
 
     % ensure ROIs are floats
     rois = single(rois);
-    
+
     bbox_targets = zeros(size(rois, 1), 5, 'single');
-    
+
     % Indices of ground-truth ROIs
     gt_inds = find(max_overlaps == 1);
-    
+
     if ~isempty(gt_inds)
         % Indices of examples for which we try to make predictions
         ex_inds = find(max_overlaps >= conf.bbox_thresh);
@@ -134,12 +208,12 @@ function [bbox_targets, is_valid] = compute_targets(conf, rois, overlap)
             bbox_targets(ex_inds, :) = [max_labels(ex_inds), regression_label];
         end
     end
-    
+
     % Select foreground ROIs as those with >= fg_thresh overlap
     is_fg = max_overlaps >= conf.fg_thresh;
     % Select background ROIs as those within [bg_thresh_lo, bg_thresh_hi)
     is_bg = max_overlaps < conf.bg_thresh_hi & max_overlaps >= conf.bg_thresh_lo;
-    
+
     % check if there is any fg or bg sample. If no, filter out this image
     is_valid = true;
     if ~any(is_fg | is_bg)
