@@ -122,9 +122,12 @@ function [labels, overlaps, rois, bbox_targets, bbox_loss_weights] = sample_rois
     keep_inds = [fg_inds; bg_inds];
     % Select sampled values from various arrays
     labels = labels(keep_inds);
+	% person_inds = find(labels==15);					% TODO person only
     % Clamp labels for the background ROIs to 0
-    labels((fg_rois_per_this_image+1):end) = 0;
-    overlaps = overlaps(keep_inds);
+    labels((fg_rois_per_this_image+1):end) = 0;	% TODO uncomment
+    % labels(:) = 0;									% TODO remove
+	% labels(person_inds) = 1;						% TODO remove
+	overlaps = overlaps(keep_inds);
     rois = rois(keep_inds, :);
     
     if conf.bbox_class_agnostic
